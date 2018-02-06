@@ -1,0 +1,29 @@
+{% from "includes/_formhelper.html" import render_field %}
+{% extends 'layout.html' %}
+{% block body %}
+
+{% if post_request %}
+    <div class="alert alert-info" role="alert">
+        Updated!
+    </div>
+{% endif %}
+
+<form method="POST">
+    <div class="modal-body"><label for='inputlg'>Account Number</label>
+        <div class = 'form-group'>
+            {{ render_field(form.name,disabled=True, value=data.get_username(), class_='form-control') }}
+        </div>
+    </div>
+
+    <div class="modal-body"><label for='inputlg'>Child Name</label>
+        <div class = 'form-group'>
+            {{ render_field(form.bank, value=data.get_account_number(), class_='form-control') }}
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <input type="submit" value="Confirm" class="btn btn-primary">
+    </div>
+</form>
+{% endblock %}

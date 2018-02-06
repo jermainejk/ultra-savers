@@ -1,0 +1,6 @@
+Mary,550,2018-02-3,Clothes
+Mary,1500,2018-01-12,Bills
+Mary,4000,2017-12-13,Laptop
+Mary,1200,2017-11-14,Groceries
+Mary,100,2017-11-3,Make Up
+Mary,500,2018-02-4,Groceries

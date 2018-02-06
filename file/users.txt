@@ -1,0 +1,5 @@
+Alex,alexpw,0
+Amy,amypw,7000
+Mary,marypw,15700
+Jeff,jeffpw,12000
+John,johnpw,11000

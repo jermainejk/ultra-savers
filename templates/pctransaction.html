@@ -1,0 +1,198 @@
+{% from "includes/_formhelper.html" import render_field %}
+{% extends 'layout.html' %}
+{% block body %}
+<style>
+
+body {
+        background-color: black;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+    }
+.btn {
+    margin-top: 30px;
+  background: #d934b5;
+  background-image: linear-gradient(to bottom, #d934b5, #7f2bb8);
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #c23cfc;
+  background-image: linear-gradient(to bottom, #c23cfc, #3455d9);
+  text-decoration: none;
+    color: #fcedfc;
+}
+
+.btn2 {
+  background: #cade2f;
+  background-image: linear-gradient(to bottom, #cade2f, #5eb82b);
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn2:hover {
+  background: #3cfc79;
+  background-image: linear-gradient(to bottom, #3cfc79, #3498db);
+  text-decoration: none;
+}
+
+.box{
+        background-color: whitesmoke;
+        width: 100%;
+        height: auto;
+        border: 15px solid rgba(224, 52, 106, 1);
+        padding: 10px;
+        padding-bottom: 55px;
+        text-align: center;
+        border-radius: 20px;
+        margin:auto;
+        color: #666666;
+        position: relative;
+
+
+}
+    .title_goal {
+        text-align: center;
+        color:whitesmoke;
+    }
+
+.theCombo {
+  background-clip: padding-box;
+  border-radius: 0;
+  box-sizing: border-box;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  padding-right: 20px;
+  outline: none;
+  border: 2px solid black;
+  width: 180px;
+  height: 45px;
+  line-height: 25px;
+  font-size: 16px;
+  vertical-align: middle;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  background-color: #B1B1B1;
+  background-repeat: no-repeat;
+  background-position: right center;
+
+
+}
+    .combo {
+        text-align: center;
+    }
+.btnsearch {
+    margin-top: 30px;
+  background: #d934b5;
+  background-image: linear-gradient(to bottom, #d934b5, #7f2bb8);
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 13px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btnsearch:hover {
+  background: #c23cfc;
+  background-image: linear-gradient(to bottom, #c23cfc, #3455d9);
+  text-decoration: none;
+    color: #fcedfc;
+}
+</style>
+ <div>
+        <a href="/registerchild" class="btn btn-warning">Register Child Bank Account</a>
+    </div>
+    <div>
+        <a href="/registerparent" class="btn btn-warning">Register Parent Bank Account</a>
+    </div>
+     <div>
+        <a href="/allregister" class="btn btn-warning">View all Bank Account Registered</a>
+    </div>
+
+
+
+
+ <div class ="box">
+ <h3>Goals</h3>
+
+    <table class="table table-bordered" style="position: relative;color: black; border-color: black;">
+        <thead>
+        <tr>
+            <th style='text-align: center'>User</th>
+            <th style='text-align: center'>Type</th>
+            <th style='text-align: center'>Setter</th>
+            <th style='text-align: center'>Goal</th>
+            <th style='text-align: center'>Amount</th>
+            <th style='text-align: center'>Duration in Days</th>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody>
+
+
+            {% for i in users%}
+                <tr>
+                    <td>{{ i.get_userid() }}</td>
+                    <td>{{ i.get_type() }}</td>
+                    <td>{{ i.get_setter() }}</td>
+                    <td>{{ i.get_goal() }}</td>
+                    <td>S${{'%.2f' % i.get_transacted_amount()|float }}/S${{'%.2f' % i.get_amount()|float }}</td>
+                    <td>{{ i.get_duration() }}</td>
+                    <td><a target="_blank" href = "/transfer/{{ i.get_setter() }}/{{ i.get_goal() }}" >Transfer Money</a></td>
+                </tr>
+            {% endfor %}
+
+
+        </tbody>
+
+    </table>
+ </div>
+
+
+     <div class="jumbotron text-center">
+        <h1>Transaction Summary</h1>
+        <table class="table table-bordered" style="position: relative;color: black; border-color: black;">
+            <thead>
+            <tr>
+                <th style='text-align: center'>Setter</th>
+                <th style='text-align: center'>Goal</th>
+                <th style='text-align: center'>Amount Transferred</th>
+                <th style='text-align: center'>Date</th>
+            </thead>
+            <tbody>
+
+                {% for trx in transactions%}
+                    <tr>
+
+                        <td>{{ trx.get_user_name() }}</td>
+                        <td>{{ trx.get_goal_name() }}</td>
+                        <td>S${{'%.2f' % trx.get_amount()|float }}</td>
+                        <td>{{ trx.get_date_time() }}</td>
+
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+     </div>
+
+
+{% endblock %}
