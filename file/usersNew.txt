@@ -1,0 +1,27 @@
+Mary,parent,Mary,250.00,10000.00,14-3-2017,Car,1050.00,14-11-2017
+Mary,parent,Mary,150.00,10000.00,22-4-2017,Car,900.00,14-11-2017
+Mary,parent,Mary,200.00,10000.00,14-11-2017,Car,2500.00,14-11-2017
+Mary,parent,Mary,100.00,10000.00,31-12-2017,Car,3000.00,14-11-2017
+Mary,parent,Mary,100.00,10000.00,20-1-2018,Car,2000.00,14-11-2017
+Mary,parent,Mary,90.00,10000.00,1-2-2018,Car,1500.00,14-11-2017
+Mary,parent,Mary,230.00,600.00,14-11-2017,Printer,2500.00,14-11-2017
+Mary,parent,Mary,110.00,600.00,31-12-2017,Printer,3000.00,14-11-2017
+Mary,parent,Mary,65.00,600.00,20-1-2018,Printer,2000.00,14-11-2017
+Mary,parent,Mary,100.00,600.00,1-2-2018,Printer,1500.00,14-11-2017
+Mary,child,Joycelyn,600.00,2000.00,14-11-2017,Camera,2500.00,14-11-2017
+Mary,child,Joycelyn,800.20,2000.00,31-12-2017,Camera,3000.00,14-11-2017
+Mary,child,Joycelyn,450.00,2000.00,20-1-2018,Camera,2000.00,14-11-2017
+Mary,child,Joycelyn,150.00,2000.00,1-2-2018,Camera,500.00,14-11-2017
+Jeff,parent,Jeff,3210.00,20000.00,23-12-2017,Car,0.00,23-12-2017
+Jeff,parent,Jeff,5000.00,20000.00,3-1-2018,Car,4000.00,23-12-2017
+Jeff,parent,Jeff,2000.00,20000.00,2-2-2018,Car,1000.00,23-12-2017
+Jeff,child,Lucas,150.00,700.00,23-12-2017,Phone,0.00,23-12-2017
+Jeff,child,Lucas,320.00,700.00,3-1-2018,Phone,4000.00,23-12-2017
+Jeff,child,Lucas,200.00,700.00,2-2-2018,Phone,1000.00,23-12-2017
+Jeff,child,Casey,25.00,100.00,23-12-2017,Clothes,0.00,23-12-2017
+Jeff,child,Casey,20.00,100.00,3-1-2018,Clothes,4000.00,23-12-2017
+Jeff,child,Casey,10.00,100.00,3-2-2018,Clothes,4000.00,23-12-2017
+John,parent,John,230.00,800.00,16-1-2018,Play Station,1500.00,16-1-2018
+John,child,James,20.00,90.00,17-1-2018,Soccer Ball,1500.00,17-1-2018
+Amy,parent,Amy,50.00,500.00,4-2-2018,Designer Handbag,4000.00,4-2-2018
+Amy,child,May,20.00,200.00,4-2-2018,Polaroid Camera,4000.00,4-2-2018

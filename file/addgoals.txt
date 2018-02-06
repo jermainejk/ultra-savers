@@ -1,0 +1,10 @@
+John,child,James,Soccer Ball,20,90,17-1-2018,5,A,x,a
+Amy,child,May,Basketball,99,30,4-2-2018,10,A,x,a
+Amy,parent,Amy,Designer Handbag,500,25,4-2-2018,A,x,a
+John,parent,John,Play Station,800,200,5-2-2018,230,A,x,a
+Mary,parent,Mary,Car,10000,1095,14-11-2017,2000,A,x,a
+Mary,parent,Mary,Printer,600,60,1-2-2018,100,A,x,a
+Mary,child,Joycelyn,Camera,2000,120,2-2-2018,300,A,x,a
+Jeff,parent,Jeff,Car,20000,1460,23-12-2017,3000,A,x,a
+Jeff,child,Lucas,Phone,700,30,24-12-2017,150,A,x,a
+Jeff,child,Casey,Clothes,100,14,4-2-2018,30,A,x,a
