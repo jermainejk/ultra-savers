@@ -116,46 +116,26 @@ body {
     color: #fcedfc;
 }
 </style>
- <div>
-        <a href="/registerchild" class="btn btn-warning">Register Child Bank Account</a>
-    </div>
-    <div>
-        <a href="/registerparent" class="btn btn-warning">Register Parent Bank Account</a>
-    </div>
-     <div>
-        <a href="/allregister" class="btn btn-warning">View all Bank Account Registered</a>
-    </div>
-
-
-
-
- <div class ="box">
- <h3>Goals</h3>
+<div class ="box">
 
     <table class="table table-bordered" style="position: relative;color: black; border-color: black;">
         <thead>
         <tr>
-            <th style='text-align: center'>User</th>
-            <th style='text-align: center'>Type</th>
-            <th style='text-align: center'>Setter</th>
-            <th style='text-align: center'>Goal</th>
-            <th style='text-align: center'>Amount</th>
-            <th style='text-align: center'>Duration in Days</th>
-            <th></th>
-            <th></th>
+            <th style='text-align: center'>Name</th>
+            <th style='text-align: center'>Bank</th>
+            <th style='text-align: center'>Status</th>
+            <th> Actions </th>
+{#            <th><a href = "/deletechild" class =" btn btn-warning">Delete</a></th>#}
         </thead>
         <tbody>
 
 
-            {% for i in users%}
+            {% for i in accounts %}
                 <tr>
-                    <td>{{ i.get_userid() }}</td>
-                    <td>{{ i.get_type() }}</td>
-                    <td>{{ i.get_setter() }}</td>
-                    <td>{{ i.get_goal() }}</td>
-                    <td>S${{'%.2f' % i.get_transacted_amount()|float }}/S${{'%.2f' % i.get_amount()|float }}</td>
-                    <td>{{ i.get_duration() }}</td>
-                    <td><a target="_blank" href = "/transfer/{{ i.get_setter() }}/{{ i.get_goal() }}" >Transfer Money</a></td>
+                    <td>{{ i.get_username() }}</td>
+                    <td>{{ i.get_account_number() }}</td>
+                    <td>{{ i.get_parent_child() }}</td>
+                    <td><a target="_blank" href="/editamount/{{ i.get_uuid() }}" class="btn btn-warning">Update</a></td>
                 </tr>
             {% endfor %}
 
@@ -163,36 +143,5 @@ body {
         </tbody>
 
     </table>
- </div>
-
-
-     <div class="jumbotron text-center">
-        <h1>Transaction Summary</h1>
-        <table class="table table-bordered" style="position: relative;color: black; border-color: black;">
-            <thead>
-            <tr>
-                <th style='text-align: center'>Setter</th>
-                <th style='text-align: center'>Goal</th>
-                <th style='text-align: center'>Amount Transferred</th>
-                <th style='text-align: center'>Date</th>
-            </thead>
-            <tbody>
-
-                {% for trx in transactions%}
-                    <tr>
-
-                        <td>{{ trx.get_user_name() }}</td>
-                        <td>{{ trx.get_goal_name() }}</td>
-                        <td>S${{'%.2f' % trx.get_amount()|float }}</td>
-                        <td>{{ trx.get_date_time() }}</td>
-
-                    </tr>
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-     </div>
-
-
+</div>
 {% endblock %}

@@ -1,7 +1,6 @@
 from Users import Users
 from SpendingLimit import SpendingLimit
 from SavingHistory import SavingHistory
-from Goal import Goal
 from _datetime import datetime
 
 def processUser(name,todayMonth):
@@ -40,51 +39,12 @@ def processUser(name,todayMonth):
 
 
 def searchHistoryforTotalSaving(name,item):
-    sh_file = open('file/usersNew.txt', 'r')
+    sh_file = open('file/savinghistory.txt', 'r')
     totalamount = 0
     for shlist in sh_file:
         list = shlist.split(',')
-        if list[0] == name and list[6] == item:
-            totalamount = totalamount + float(list[3])
-    return totalamount
-
-def retrieve(name,todayMonth):
-    rList = []
-    r_file = open('file/addgoals.txt','r')
-    for rlist in r_file:
-        list = rlist.split(',')
-        savedate = list[6]
-        savedateStr = savedate.split('-')
-        dd = int(savedateStr[0])
-        mm = int(savedateStr[1])
-        yy = int(savedateStr[2])
-        print(mm)
-
-        if list[0] == name and mm == todayMonth:
-            goal = float(list[4])
-
-            saveTotal = retrieveHistory(list[0], list[5])
-            howmuchMore = goal - saveTotal
-            howmuchMore = '%.2f' % howmuchMore
-
-            monthly = 0.05 / 12
-            convert = monthly / 100
-            interest = saveTotal * convert
-            i = '%.2f' % interest
-
-            a = '%.2f' %goal
-
-            s = Goal(list[0], list[1], list[2], list[3], a, list[5], list[6], list[7], howmuchMore, i, list[8],list[9],list[10])
-            rList.append(s)
-    return rList
-
-def retrieveHistory(name,item):
-    rh_file = open('file/addgoals.txt', 'r')
-    totalamount = 0
-    for rhlist in rh_file:
-        list = rhlist.split(',')
-        if list[0] == name and list[3] == item:
-            totalamount = totalamount + float(list[5])
+        if list[0] == name and list[4] == item:
+            totalamount = totalamount + float(list[6])
     return totalamount
 
 

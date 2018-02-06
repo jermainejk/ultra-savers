@@ -1,10 +1,9 @@
-John,child,James,Soccer Ball,20,90,17-1-2018,5,A,x,a
-Amy,child,May,Basketball,99,30,4-2-2018,10,A,x,a
-Amy,parent,Amy,Designer Handbag,500,25,4-2-2018,A,x,a
-John,parent,John,Play Station,800,200,5-2-2018,230,A,x,a
-Mary,parent,Mary,Car,10000,1095,14-11-2017,2000,A,x,a
-Mary,parent,Mary,Printer,600,60,1-2-2018,100,A,x,a
-Mary,child,Joycelyn,Camera,2000,120,2-2-2018,300,A,x,a
-Jeff,parent,Jeff,Car,20000,1460,23-12-2017,3000,A,x,a
-Jeff,child,Lucas,Phone,700,30,24-12-2017,150,A,x,a
-Jeff,child,Casey,Clothes,100,14,4-2-2018,30,A,x,a
+John,child,James,Soccer Ball,20,20,2018-01-01,5,A,x,,a
+Amy,child,May,Basketball,99,30,2018-01-01,10,A,x,a
+John,parent,John,Basketball,50,200,2018-02-05,50,A,x,a
+John,parent,John,Shirt,200,30,2018-02-05,100,A,x,a
+John,parent,John,Basketball,200,30,2018-02-05,0,A,x,a
+Mary,parent,Mary,Car,200,30,2018-02-05,0,A,x,a
+Amy,child,James,iPhone,899,90,2018-02-05,0,A,x,a
+Amy,parent,Amy,House,500000,3650,2018-02-06,0,A,x,a
+Amy,parent,Amy,MBS,400,90,2018-02-06,0,A,x,a

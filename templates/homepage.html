@@ -106,39 +106,39 @@
             <th>Total interest earned</th>
             <th> </th>
         </tr>
-        {% for r in r %}
-            {% if r.get_type() == 'parent' %}
+        {% for user in users %}
+            {% if user.get_type() == 'p' %}
 
         <tr>
-            <td>{{ r.get_setter() }}</td>
-            <td>{{ r.get_goal() }}</td>
-            <td>{{ r.get_startdate() }}</td>
-            <td>${{ r.get_left() }}</td>
-            <td>${{ r.get_amount() }}</td>
-            <td>${{ r.get_interest() }}</td>
-            <td><a href="/updateNina/{{ r.get_setter() }}${{ r.get_goal() }}" class="btn btn-warning">Details</a></td>
+            <td>{{ user.get_name() }}</td>
+            <td>{{ user.get_goalType() }}</td>
+            <td>{{ user.get_start() }}</td>
+            <td>${{ user.get_left() }}</td>
+            <td>${{ user.get_goal() }}</td>
+            <td>${{ user.get_interest() }}</td>
+            <td><a href="/updateNina/{{ user.get_name() }}${{ user.get_goalType() }}" class="btn btn-warning">Details</a></td>
         </tr>
             {% else %}
         <br>
         <br>
         <tr>
             <th>Name (Child)</th>
-            <th>{{ r.get_setter() }}'s goal item</th>
+            <th>{{ user.get_name() }}'s goal item</th>
             <th>Initial saving date</th>
-            <th>How much more to reach {{ r.get_setter() }}'s goal</th>
+            <th>How much more to reach {{ user.get_name() }}'s goal</th>
             <th>Targeted goal saving</th>
             <th>Total interest earned</th>
             <th> </th>
         </tr>
 
         <tr>
-            <td>{{ r.get_setter() }}</td>
-            <td>{{ r.get_goal() }}</td>
-            <td>{{ r.get_startdate() }}</td>
-            <td>${{ r.get_left() }}</td>
-            <td>${{ r.get_amount() }}</td>
-            <td>${{ r.get_interest() }}</td>
-                <td><a href="/updateNina/{{ r.get_setter() }}${{ r.get_goal() }}" class="btn btn-warning">Details</a></td>
+            <td>{{ user.get_name() }}</td>
+            <td>{{ user.get_goalType() }}</td>
+            <td>{{ user.get_start() }}</td>
+            <td>${{ user.get_left() }}</td>
+            <td>${{ user.get_goal() }}</td>
+            <td>${{ user.get_interest() }}</td>
+                <td><a href="/updateNina/{{ user.get_name() }}${{ user.get_goalType() }}" class="btn btn-warning">Details</a></td>
             {% endif %}
         {% endfor %}
 

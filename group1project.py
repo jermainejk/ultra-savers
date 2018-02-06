@@ -4,6 +4,8 @@ import Process
 import MainProcess
 import mainprocessEdmund as mpE
 import AddGoalProcess
+from Relations import Relations
+
 from wtforms import Form, StringField, SelectField, TextAreaField, RadioField, PasswordField, validators, IntegerField, TextField
 from datetime import datetime
 import datetime
@@ -12,19 +14,21 @@ import SavingsGoal
 import time
 import Goal
 
-
-
 app = Flask(__name__)
 
-
+class ConfirmTransfer(Form):
+    name = StringField('Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    bank = StringField('Bank Number', [validators.Length(min=1, max=150), validators.DataRequired()])
+    goal = StringField('Goal', [validators.Length(min=1, max=150), validators.DataRequired()])
+    amount = StringField('Amount to transfer', [validators.Length(min=1, max=150), validators.DataRequired()])
 
 class RegisterChild(Form):
-    parent = StringField('Parent Name', [validators.Length(min=1, max=150), validators.DataRequired()])
-    bank = StringField('Parent Bank Number', [validators.Length(min=1, max=150), validators.DataRequired()])
-    child= StringField('Child Name', [validators.Length(min=1, max=150), validators.DataRequired()])
-    account = StringField('Child Saving Account Number', [validators.Length(min=1, max=150), validators.DataRequired()])
-    amount = StringField('Saving Amount', [validators.Length(min=1, max=150), validators.DataRequired()])
+    name = StringField('Child Account Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    bank = StringField('Child Bank Number', [validators.Length(min=1, max=150), validators.DataRequired()])
 
+class RegisterParent(Form):
+    name = StringField('Parent Account Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    bank = StringField('Parent Bank Number', [validators.Length(min=1, max=150), validators.DataRequired()])
 
 class LoginForm(Form):
     username = StringField('Username', [validators.DataRequired()])
@@ -42,7 +46,7 @@ def login():
         P = MainProcess.validate_User(username, password)
         if P == True:
             session['userid'] = username
-            return redirect(url_for('afterlogin'))
+            return redirect(url_for('pctransaction'))
         else:
             error = 'Invalid login'
             flash(error, 'danger')
@@ -51,6 +55,38 @@ def login():
             # return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
+
+@app.route('/allregister',methods=['GET'])
+def allregister():
+
+    user = session['userid']
+
+    accounts = MainProcess.get_accounts()
+
+    relations = MainProcess.get_relations()
+
+    all_children_dict = Relations.get_all_children( relations, user)
+
+    all_user_accounts = []
+    print(all_children_dict)
+
+    for account in accounts:
+        print( "why", account.get_username(), all_children_dict )
+        if( all_children_dict.get(account.get_username(),False) or account.get_username() == user):
+            all_user_accounts.append( account )
+
+    # relations = MainProcess.parse_relations(relations)
+    #
+    # for acc in accounts:
+    #     if( acc.get_username() == user ):
+    #         this_account = acc
+    # get my account
+    # get my kids account
+
+    # accounts
+
+    # print( accounts )
+    return render_template('allregister.html', accounts=all_user_accounts)
 
 
 @app.route('/logout')
@@ -63,41 +99,148 @@ def logout():
 def registerchild():
     form = RegisterChild(request.form)
     if request.method == 'POST' and form.validate():
-        MainProcess.registerNewChild(form.parent.data, form.bank.data, form.child.data, form.account.data,
-                                     form.amount.data)
-        print("Child Successfully Register")
+        user_name = session['userid']
+        MainProcess.registerNewChild(user_name, form.name.data, form.bank.data)
+        print("Child Account Successfully Register")
         return redirect(url_for('pctransaction'))
     return render_template('registerchild.html', form=form)
 
+@app.route('/registerparent' ,methods=['GET', 'POST'])
+def registerparent():
+    form = RegisterParent(request.form)
+    if request.method == 'POST' and form.validate():
+        username = session["userid"]
+        MainProcess.registerNewAcc(username, form.name.data, form.bank.data)
+        print("Account Successfully Register")
+        return redirect(url_for('pctransaction'))
+    return render_template('registerparent.html', form=form)
+
+@app.route('/transfer/<user_name>/<goal_name>', methods=['GET','POST'])
+def transfer(user_name, goal_name):
+    form = ConfirmTransfer(request.form)
+    # if request.method == 'POST' and form.validate():
+    # get user details
+    # get goal details
+    transactions = MainProcess.get_transactions()
+
+    goal_amount = 0
+    goals = MainProcess.get_goals()
+    for goal in goals:
+        if( goal.get_goal() == goal_name and goal.get_userid() == user_name):
+            goal_amount = float(goal.get_amount())
+
+    this_account = False
+    accounts = MainProcess.get_accounts()
+    for acc in accounts:
+        if( acc.get_username() == user_name):
+            this_account = acc
+
+    transacted_amount = 0
+    for trx in transactions:
+        if( trx.get_user_name() == user_name or trx.get_goal_name == goal_name):
+            transacted_amount = transacted_amount + float(trx.get_amount())
+
+    if( request.method == 'POST' ):
+        # add to transaction
+        print( 'surrender!' )
+        MainProcess.add_transaction( user_name, goal_name, form.amount._value() )
+        return redirect(url_for('pctransaction'))
+
+    return render_template('transfer.html',
+                            form=form,
+                            data=this_account,
+                            goal_name=goal_name,
+                            transacted_amount=transacted_amount,
+                            goal_amount=goal_amount
+                           )
 
 
 @app.route('/pc',methods=['GET', 'POST'])
 def pctransaction():
+    userlist = []
+    user = open('file/addgoals.txt', 'r')
+    for userid in user:
+        list = userid.split(',')
+        if list[0] not in userlist:
+            userlist.append(list[0])
 
     userslist = []
-    userslist = MainProcess.processUser(session['userid'])
+    userslist = MainProcess.processUserGoals(session['userid'])
 
-    totalDeposit = 0
-    totalDeposit = MainProcess.processTransaction(session['userid'], MainProcess.current_Month(), 'deposit')
+    # get transactions
+    transactions = MainProcess.get_transactions()
 
-    return render_template('pctransaction.html',child=userslist, count=len(userslist),
-                           totalDepositAmount = totalDeposit, monthNow= MainProcess.current_Month(),
-                          monthPrev =MainProcess.previous_Month(), TEST= MainProcess.TEST(session['userid']),userS = session['userid'])
+    setter_dict = {}
+
+    for _user in userslist:
+        setter_dict[_user.get_setter()] = _user
+
+    trx_list = []
+
+    for trx in transactions:
+        usr = setter_dict.get(trx.get_user_name(),False)
+        if( usr ):
+            trx_list.append(trx)
+            usr.add_transacted_amount( trx.get_amount() )
+
+    # for transaction in transactions:
+    #     if( transaction.get_goal_name() == '' or transaction.get_user_name() == '' )
 
 
-@app.route('/editamount',methods=['GET', 'POST'])
-def editamount():
-    form = RegisterChild(request.form)
-    class NewLimit(Form):
-        childName = StringField('Name', [validators.Length(min=1, max=150), validators.DataRequired()])
-        monthlylimit = StringField('Amount', [validators.Length(min=1, max=150), validators.DataRequired()])
+    months = ('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+              'November', 'December')
+    return render_template(
+                            'pctransaction.html',
+                            users = userslist,
+                            count=len(userslist),
+                            user = userlist,
+                            months = months,
+                            setter_dict=setter_dict,
+                            transactions=trx_list
+                           )
 
-    form = NewLimit(request.form)
-    if request.method == 'POST' and form.validate():
-        MainProcess.updateAmount(session['userid'], form.childName.data, form.monthlylimit.data)
-        print('Success')
-        return redirect(url_for('pctransaction'))
-    return render_template('editamount.html', form=form,user = session['userid'])
+
+@app.route('/editamount/<uuid>',methods=['GET', 'POST'])
+def editamount(uuid):
+
+    # form = RegisterChild(request.form)
+    # class NewLimit(Form):
+    #     childName = StringField('Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    #     monthlylimit = StringField('Amount', [validators.Length(min=1, max=150), validators.DataRequired()])
+
+    # form = NewLimit(request.form)
+    # if request.method == 'POST' and form.validate():
+    #     MainProcess.updateAmount(session['userid'], form.childName.data, form.monthlylimit.data)
+    #     print('Success')
+    #     return redirect(url_for('pctransaction'))
+    class AccountDetails(Form):
+        # childName = StringField('Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+
+        name = StringField('Child Account Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+        bank = StringField('Bank Number', [validators.Length(min=1, max=150), validators.DataRequired()])
+
+    form = AccountDetails(request.form)
+
+    accounts = MainProcess.get_accounts()
+
+    if( request.method == 'POST' ):
+        post_request = True
+    else:
+        post_request = False
+
+    for acc in accounts:
+        if( acc.get_uuid() == uuid):
+            this_account = acc
+
+            if( post_request ):
+                if(  len(form.bank._value()) >= 15 ):
+                # acc.set_username( form.name._value() )
+                    acc.set_account_number( form.bank._value() )
+
+    if (post_request):
+        MainProcess.set_accounts( accounts )
+
+    return render_template('editamount.html', form=form, data=this_account, post_request=post_request)
 
 @app.route('/deletechild', methods=['GET','POST'])
 def delete():
@@ -140,8 +283,6 @@ def afterlogin():
 
     usersList = []
     usersList = Process.processUser(session['userid'],todayMonth)
-    rList = []
-    rList = Process.retrieve(session['userid'],todayMonth)
     savings = []
     limit = []
     limit = Process.limit(session['userid'],todayMonth)
@@ -149,7 +290,7 @@ def afterlogin():
     displayHistory = []
     #displayHistory = Process.displayHistory(session['userid'],goalType)
 
-    return render_template('homepage.html',r=rList, users=usersList,checkMM=months[todayMonth],saving=savings,todayMonth=todayMonth, prevMonth=prevMonth, todayYear=todayYear, prevYear=prevYear,limits=limit,over=over,form=form,userS = session['userid'],displayHistory=displayHistory)
+    return render_template('homepage.html', users=usersList,checkMM=months[todayMonth],saving=savings,todayMonth=todayMonth, prevMonth=prevMonth, todayYear=todayYear, prevYear=prevYear,limits=limit,over=over,form=form,userS = session['userid'],displayHistory=displayHistory)
 
 
 class MonthForm(Form):
@@ -196,6 +337,9 @@ def selected():
 def update_savingHistory(postlist):
     #session['userid'] = 'Mary'
 
+    print('==========================================')
+    print(postlist)
+    print('==========================================')
     plist = postlist.split('$')
     name = plist[0]
     goalType = plist[1]
@@ -222,6 +366,9 @@ def update_savingHistory(postlist):
 
     form = MonthForm(request.form)
 
+    print('*************************************')
+    print(postlist)
+    print('**********************************')
     return render_template('nov.html',users=usersList,checkMM=checkMM,limits=limit,over=over,user=name,displayHistory=displayHistory,form=form,userS = session['userid'])
     #return redirect(url_for('afterlogin'))
 
@@ -639,6 +786,7 @@ class Form2(Form):
 
 @app.route('/checkspend', methods=['GET', 'POST'])
 def checkspend():
+
     today = datetime.datetime.today()
     monthMM=today.month
     yearYY=today.year

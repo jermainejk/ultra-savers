@@ -1,5 +1,5 @@
 class Goal():
-    def __init__(self, userid,type,setter, goal,amount, duration, startdate,saveamount,limit,left,interest,status = 'A',val='x',str ='a'):
+    def __init__(self, userid,type,setter, goal,amount, duration, startdate,saveamount,status = 'A',val='x',str ='a'):
         self.__userid = userid
         self.__type = type
         self.__setter = setter
@@ -11,9 +11,7 @@ class Goal():
         self.__val = val
         self.__str = str
         self.__saveamount = saveamount
-        self.__limit = limit
-        self.__left = left
-        self.__interest = interest
+        self.__transacted_amount = 0
 
     def get_goal(self):
         return self.__goal
@@ -31,6 +29,8 @@ class Goal():
         return self.__str
     def get_startdate(self):
         return self.__startdate
+    def get_transacted_amount(self):
+        return self.__transacted_amount
 
     def get_status(self):
         return self.__status
@@ -38,12 +38,6 @@ class Goal():
         return self.__val
     def get_saveamount(self):
         return self.__saveamount
-    def get_limit(self):
-        return self.__limit
-    def get_left(self):
-        return self.__left
-    def get_interest(self):
-        return self.__interest
 
 
     def set_goal(self,goal):
@@ -66,9 +60,9 @@ class Goal():
         self.__str = str
     def set_startdate(self,startdate):
         self.__startdate = startdate
-    def set_limit(self,limit):
-        self.__limit = limit
-    def set_left(self,left):
-        self.__left = left
-    def set_interest(self,interest):
-        self.__interest = interest
+
+    def add_transacted_amount(self, amount):
+        if(self.__transacted_amount):
+            self.__transacted_amount =  float(self.__transacted_amount) + float(amount)
+        else:
+            self.__transacted_amount = float(amount)

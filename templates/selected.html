@@ -96,7 +96,7 @@
             <th> </th>
         </tr>
         {% for user in users %}
-            {% if user.get_type() == 'parent' %}
+            {% if user.get_type() == 'p' %}
         <tr>
             <td>{{ user.get_name() }}</td>
             <td>{{ user.get_goalType() }}</td>
